@@ -1,6 +1,7 @@
 package ru.netology.delivery.test;
 
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,38 +44,31 @@ class DeliveryTest {
 
         $("[name='phone']").setValue(validUser.getPhone());
         $(By.className("checkbox__box")).click();
-        $(byText("Забронировать")).click();
-        //$(By.className("button__text")).click();
-        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
+        $(By.className("button__text")).click();
 
-        $(By.className("notification__title"));
-        $x("//div[contains@class, 'notification__content')]").shouldHave(exactText("Встреча успешно запланирована на " + firstMeetingDate));
-        $x("//div[contains@class, 'notification__content')]").shouldBe(visible);
+        $(byText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $("[data-test-id='success-notification'] .notification__content");
+
+
+        $("[data-test-id='success-notification'] .notification__content").shouldHave(Condition.exactText("Встреча успешно запланирована на " + firstMeetingDate));
+        $("[data-test-id='success-notification'] .notification__content").shouldBe(Condition.visible, Duration.ofSeconds(15));
 
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         $("[data-test-id=date] input").setValue(secondMeetingDate);
-        $(byText("Забронировать")).click();
-        // $(By.className("button__text")).click();
 
-        $("data-test-id='replan-notification].notification__content");
-        $("[data-test-id='notification'].notification__content").shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
-        $x("//div[contains@class, 'notification__content')]").shouldBe(visible);
+        $(By.className("button__text")).click();
+
+        $("data-test-id='replan-notification'] .notification__content");
+        $("[data-test-id='replan-notification'] .notification__content").shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
+        $("[data-test-id='replan-notification'] .notification__content").shouldBe(visible);
 
         $("[data-test-id='replan-notification'] button").click();
-        $("[data-test-id='notification'].notification__content");
-        $x("//div[contains@class, 'notification__content')]").shouldHave(exactText("Встреча успешно запланирована на " + secondMeetingDate));
-        $x("//div[contains@class, 'notification__content')]").shouldBe(visible);
+        $("[data-test-id='success-notification'] .notification__content");
+
+        $("[data-test-id='success-notification'] .notification__content").shouldHave(exactText("Встреча успешно запланирована на " + secondMeetingDate));
+        $("[data-test-id='success-notification'] .notification__content").shouldBe(visible);
 
 
-        //var daysToAddForFirstMeeting = 4;
-        //var firstMeetingDate = DataGenerator.generateDate(daysToAddForFirstMeeting);
-        //var daysToAddForSecondMeeting = 7;
-        //var secondMeetingDate = DataGenerator.generateDate(daysToAddForSecondMeeting);
-        // TODO: добавить логику теста в рамках которого будет выполнено планирование и перепланирование встречи.
-        // Для заполнения полей формы можно использовать пользователя validUser и строки с датами в переменных
-        // firstMeetingDate и secondMeetingDate. Можно также вызывать методы generateCity(locale),
-        // generateName(locale), generatePhone(locale) для генерации и получения в тесте соответственно города,
-        // имени и номера телефона без создания пользователя в методе generateUser(String locale) в датагенераторе
     }
 }
 
